@@ -28,3 +28,4 @@ toy_data/
 .data/
 runs/
 *.zip
+.idea/*
