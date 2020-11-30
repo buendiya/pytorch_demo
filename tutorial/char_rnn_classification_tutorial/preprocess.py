@@ -1,11 +1,11 @@
-# -*-coding:utf-8-*-
-
 from __future__ import unicode_literals, print_function, division
 from io import open
 import glob
 import os
+
 import unicodedata
 import string
+import torch
 
 
 def findFiles(path):
@@ -48,9 +48,6 @@ for filename in findFiles('data/names/*.txt'):
     category_lines[category] = lines
 
 n_categories = len(all_categories)
-print(category_lines['Italian'][:5])
-
-import torch
 
 
 # Find letter index from all_letters, e.g. "a" = 0
@@ -73,8 +70,15 @@ def lineToTensor(line):
         tensor[li][0][letterToIndex(letter)] = 1
     return tensor
 
+
 print(letterToTensor('J'))
 print(letterToTensor('J').size())
 
 print(lineToTensor('Jones').size())
+
+
+def categoryFromOutput(output):
+    top_n, top_i = output.topk(1)
+    category_i = top_i[0].item()
+    return all_categories[category_i], category_i
 
